@@ -1,7 +1,5 @@
 let x = [];
-let y = [];
 let fourierX;
-let fourierY;
 let time = 0;
 let path = [];
 
@@ -14,15 +12,16 @@ function setup() {
 
     for (let i = 0; i < 100; i++) {
         angle = map(i, 0, 100, 0, TWO_PI)
-        x.push(100 * cos(angle))
-        y.push(100 * sin(angle))
+        x_i = 100 * cos(angle);
+        y_i = 100 * sin(angle);
+
+        const complex = new ComplexNumber(x_i, y_i);
+        // TODO: Rename x to signal
+        x.push(complex);
     }
 
     fourierX = discreteFourierTransform(x);
     fourierX.sort((a, b) => b.amp - a.amp);
-
-    fourierY = discreteFourierTransform(y);
-    fourierY.sort((a, b) => b.amp - a.amp);
 
 }
 
@@ -54,12 +53,8 @@ function epicycles(x, y, rotation, fourier) {
 function draw() {
     background(0);
 
-    let vx = epicycles(width / 2 + 100, 100, 0, fourierX);
-    let vy = epicycles(100, height / 2 + 100, HALF_PI, fourierY);
-    let v = createVector(vx.x, vy.y);
+    let v = epicycles(width / 2, height / 2, 0, fourierX);
     path.unshift(v);
-    line(vx.x, vx.y, v.x, v.y);
-    line(vy.x, vy.y, v.x, v.y);
 
     beginShape();
     noFill();
@@ -68,12 +63,12 @@ function draw() {
     }
     endShape();
 
-    const dt = TWO_PI / fourierY.length;
+    const dt = TWO_PI / fourierX.length;
     time += dt;
 
     if (time > TWO_PI) {
         time = 0;
         path = [];
     }
-    
+
 }

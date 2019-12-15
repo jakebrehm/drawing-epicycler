@@ -1,3 +1,26 @@
+class ComplexNumber {
+    constructor(real, imaginary) {
+        this.real = real;
+        this.imaginary = imaginary;
+    }
+
+    add(addend) {
+        let real = this.real + addend.real;
+        let imaginary = this.imaginary + addend.imaginary;
+        return new ComplexNumber(real, imaginary)
+    }
+
+    mult(multiplier) {
+        let a = this.real;
+        let b = this.imaginary;
+        let c = multiplier.real;
+        let d = multiplier.imaginary;
+        const real = a * c - b * d;
+        const imaginary = a * d + b * c;
+        return new ComplexNumber(real, imaginary);
+    }
+}
+
 /**
  * Applies a discrete fourier transform to the input signal.
  * @param {Array} x Signal on which to apply transformation.
@@ -15,27 +38,26 @@ function discreteFourierTransform(x) {
     for (let k = 0; k <= N-1; k++) {
 
         // Initialize the real and imaginary variables
-        let real = 0;
-        let imaginary = 0;
+        let sum = new ComplexNumber(0, 0);
 
         // Calculate the real and imaginary parts of the complex number
         for (let n = 0; n <= N-1; n++) {
             const phi = ( TWO_PI / N ) * k * n;
-            real += x[n] * cos(phi);
-            imaginary -= x[n] * sin(phi);
+            const complex = new ComplexNumber(cos(phi), -sin(phi));
+            sum = sum.add(x[n].mult(complex));
         }
 
         // Divide each part by N
-        real /= N;
-        imaginary /= N;
+        sum.real /= N;
+        sum.imaginary /= N;
         
         // Calculate frequency, amplitude, and phase components
         let freq = k;
-        let amp = sqrt(real*real + imaginary*imaginary);
-        let phase = atan2(imaginary, real);
+        let amp = sqrt(sum.real*sum.real + sum.imaginary*sum.imaginary);
+        let phase = atan2(sum.imaginary, sum.real);
 
         // Create an object containing information about the transform
-        X[k] = { real, imaginary, freq, amp, phase };
+        X[k] = { real: sum.real, imaginary: sum.imaginary, freq, amp, phase };
 
     }
     // Finally, return the results of the discrete fourier transform
