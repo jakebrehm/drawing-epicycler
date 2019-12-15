@@ -1,7 +1,13 @@
+const DRAWING = 0;
+const FOURIER = 1;
+
 let x = [];
 let fourierX;
 let time = 0;
 let path = [];
+
+let drawing = [];
+let state = -1;
 
 function setup() {
     // Initialize the canvas
@@ -9,13 +15,22 @@ function setup() {
     // Make it fill the page without scrollbars
     document.body.style.margin = 0;
     canvas.style('display', 'block');
+}
 
-    for (let i = 0; i < 100; i++) {
-        angle = map(i, 0, 100, 0, TWO_PI)
-        x_i = 100 * cos(angle);
-        y_i = 100 * sin(angle);
+function mousePressed() {
+    state = DRAWING;
+    drawing = [];
+    x = [];
+    time = 0;
+    path = [];
+}
 
-        const complex = new ComplexNumber(x_i, y_i);
+function mouseReleased() {
+    state = FOURIER;
+    
+    for (let i = 0; i < drawing.length; i++) {
+
+        const complex = new ComplexNumber(drawing[i].x, drawing[i].y);
         // TODO: Rename x to signal
         x.push(complex);
     }
@@ -53,22 +68,33 @@ function epicycles(x, y, rotation, fourier) {
 function draw() {
     background(0);
 
-    let v = epicycles(width / 2, height / 2, 0, fourierX);
-    path.unshift(v);
-
-    beginShape();
-    noFill();
-    for (let i =0; i < path.length; i++) {
-        vertex(path[i].x, path[i].y);
+    if (state == DRAWING) {
+        let point = createVector(mouseX - width / 2, mouseY - height / 2);
+        drawing.push(point);
+        stroke(255);
+        noFill();
+        beginShape();
+        for (let v of drawing) {
+            vertex(v.x + width / 2, v.y + height / 2);
+        }
+        endShape();
+    } else if (state == FOURIER) {
+        let v = epicycles(width / 2, height / 2, 0, fourierX);
+        path.unshift(v);
+    
+        beginShape();
+        noFill();
+        for (let i =0; i < path.length; i++) {
+            vertex(path[i].x, path[i].y);
+        }
+        endShape();
+    
+        const dt = TWO_PI / fourierX.length;
+        time += dt;
+    
+        if (time > TWO_PI) {
+            time = 0;
+            path = [];
+        }
     }
-    endShape();
-
-    const dt = TWO_PI / fourierX.length;
-    time += dt;
-
-    if (time > TWO_PI) {
-        time = 0;
-        path = [];
-    }
-
 }
