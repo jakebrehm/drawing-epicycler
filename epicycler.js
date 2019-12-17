@@ -102,6 +102,32 @@ function draw() {
         }
         endShape();
 
+        // // Add text to let the user know that the drawing is being recorded
+        // let padding = 20;
+        // textSize(32);
+        // fill(255, 255, 0);
+        // text('Recording path...', padding, height-padding);
+
+        // Declare amount of padding for the text
+        const padding = 40;
+        // Construct the string and determine its width and height
+        let recordingMessage = 'Recording path...'
+        recordingMessage = recordingMessage.toUpperCase();
+        let recordingWidth = textWidth(recordingMessage);
+        let recordingHeight = textAscent(recordingMessage);
+        // Add a white background to the text
+        fill(255);
+        x = padding/2;
+        y = height-padding/2;
+        w = padding+recordingWidth;
+        h = -recordingHeight-padding;
+        rect(x, y, w, h);
+        // Add text to let the user know that the drawing is being recorded
+        fill(0);
+        textSize(24);
+        textFont('Helvetica');
+        text(recordingMessage, padding, height-padding);
+        
     } else if (state == FOURIER) {
         
         // Calculate the epicycles and add to the front of the path array
@@ -127,6 +153,26 @@ function draw() {
             path = [];
         }
 
-    }
+        // Declare amount of padding for the text
+        const padding = 40;
+        // Construct the string and determine its width and height
+        let numberEpicycles = `Number of epicycles: ${fourierSignal.length}`;
+        numberEpicycles = numberEpicycles.toUpperCase();
+        let messageWidth = textWidth(numberEpicycles);
+        let messageHeight = textAscent(numberEpicycles);
+        // Add a white background to the text
+        fill(255);
+        x = padding/2;
+        y = height-padding/2;
+        w = padding+messageWidth;
+        h = -messageHeight-padding;
+        rect(x, y, w, h);
+        // Add text to let the user know how many epicycles there are
+        fill(0);
+        textSize(24);
+        textFont('Helvetica');
+        text(numberEpicycles, padding, height-padding);
 
+    }
+    
 }
