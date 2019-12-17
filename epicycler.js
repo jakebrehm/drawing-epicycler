@@ -50,6 +50,10 @@ function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
 
+// function placeText() {
+
+// }
+
 function epicycles(x, y, rotation, fourier) {
 
     // Iterate through the fourier signal to draw each epicycle and radial line
@@ -125,7 +129,8 @@ function draw() {
         // Add text to let the user know that the drawing is being recorded
         fill(0);
         textSize(24);
-        textFont('Helvetica');
+        textFont('Helvetica Mono');
+        textStyle(BOLD);
         text(recordingMessage, padding, height-padding);
         
     } else if (state == FOURIER) {
@@ -170,7 +175,8 @@ function draw() {
         // Add text to let the user know how many epicycles there are
         fill(0);
         textSize(24);
-        textFont('Helvetica');
+        textFont('Helvetica Mono');
+        textStyle(BOLD);
         text(numberEpicycles, padding, height-padding);
 
     }
