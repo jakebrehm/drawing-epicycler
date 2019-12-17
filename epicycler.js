@@ -89,6 +89,8 @@ function draw() {
 
     // Set the background color to black
     background(0);
+    // Set the stroke weight back to its default value
+    strokeWeight(2);
 
     // Behave differently depending on whether the user is drawing or not
     if (state == DRAWING) {
@@ -106,12 +108,6 @@ function draw() {
         }
         endShape();
 
-        // // Add text to let the user know that the drawing is being recorded
-        // let padding = 20;
-        // textSize(32);
-        // fill(255, 255, 0);
-        // text('Recording path...', padding, height-padding);
-
         // Declare amount of padding for the text
         const padding = 40;
         // Construct the string and determine its width and height
@@ -120,15 +116,16 @@ function draw() {
         let recordingWidth = textWidth(recordingMessage);
         let recordingHeight = textAscent(recordingMessage);
         // Add a white background to the text
-        fill(255);
-        x = padding/2;
-        y = height-padding/2;
-        w = padding+recordingWidth;
-        h = -recordingHeight-padding;
+        fill(255, 255, 0);
+        strokeWeight(0);
+        x = 3*padding/4;
+        y = height-3*padding/4;
+        w = padding/2+recordingWidth;
+        h = -recordingHeight-padding/2;
         rect(x, y, w, h);
         // Add text to let the user know that the drawing is being recorded
         fill(0);
-        textSize(24);
+        textSize(16);
         textFont('Helvetica Mono');
         textStyle(BOLD);
         text(recordingMessage, padding, height-padding);
@@ -166,15 +163,16 @@ function draw() {
         let messageWidth = textWidth(numberEpicycles);
         let messageHeight = textAscent(numberEpicycles);
         // Add a white background to the text
-        fill(255);
-        x = padding/2;
-        y = height-padding/2;
-        w = padding+messageWidth;
-        h = -messageHeight-padding;
+        fill(255, 255, 0);
+        strokeWeight(0);
+        x = 3*padding/4;
+        y = height-3*padding/4;
+        w = padding/2+messageWidth;
+        h = -messageHeight-padding/2;
         rect(x, y, w, h);
         // Add text to let the user know how many epicycles there are
         fill(0);
-        textSize(24);
+        textSize(16);
         textFont('Helvetica Mono');
         textStyle(BOLD);
         text(numberEpicycles, padding, height-padding);
