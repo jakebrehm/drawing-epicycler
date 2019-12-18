@@ -16,6 +16,8 @@ function setup() {
     var canvas = createCanvas(windowWidth, windowHeight);
     document.body.style.margin = 0;
     canvas.style('display', 'block');
+    // Set the background color to black
+    background(0);
 }
 
 function mousePressed() {
@@ -50,9 +52,29 @@ function windowResized() {
     resizeCanvas(windowWidth, windowHeight);
 }
 
-// function placeText() {
-
-// }
+function placeText(desiredText) {
+    // Declare amount of padding for the text
+    const padding = 40;
+    // Construct the string and determine its width and height
+    let message = desiredText.toUpperCase();
+    let messageWidth = textWidth(message);
+    let messageHeight = textAscent(message);
+    // Add a yellow background to the text
+    fill(255, 255, 0);
+    strokeWeight(0);
+    // Calculate rectangle parameters
+    x = 3*padding/4;
+    y = height-3*padding/4;
+    w = padding/2+messageWidth;
+    h = -messageHeight-padding/2;
+    rect(x, y, w, h);
+    // Add text to the canvas
+    fill(0);
+    textSize(16);
+    textFont('Helvetica Mono');
+    textStyle(BOLD);
+    text(message, padding, height-padding);
+}
 
 function epicycles(x, y, rotation, fourier) {
 
@@ -87,13 +109,14 @@ function epicycles(x, y, rotation, fourier) {
 
 function draw() {
 
-    // Set the background color to black
-    background(0);
     // Set the stroke weight back to its default value
     strokeWeight(2);
 
     // Behave differently depending on whether the user is drawing or not
     if (state == DRAWING) {
+
+        // Set the background color to black
+        background(0);
 
         // Create vectors based on the location of the user's mouse
         let point = createVector(mouseX - width / 2, mouseY - height / 2);
@@ -108,35 +131,19 @@ function draw() {
         }
         endShape();
 
-        // Declare amount of padding for the text
-        const padding = 40;
-        // Construct the string and determine its width and height
-        let recordingMessage = 'Recording path...'
-        recordingMessage = recordingMessage.toUpperCase();
-        let recordingWidth = textWidth(recordingMessage);
-        let recordingHeight = textAscent(recordingMessage);
-        // Add a white background to the text
-        fill(255, 255, 0);
-        strokeWeight(0);
-        x = 3*padding/4;
-        y = height-3*padding/4;
-        w = padding/2+recordingWidth;
-        h = -recordingHeight-padding/2;
-        rect(x, y, w, h);
         // Add text to let the user know that the drawing is being recorded
-        fill(0);
-        textSize(16);
-        textFont('Helvetica Mono');
-        textStyle(BOLD);
-        text(recordingMessage, padding, height-padding);
+        placeText('Recording path...');
         
     } else if (state == FOURIER) {
         
+        // Set the background color to black
+        background(0);
+
         // Calculate the epicycles and add to the front of the path array
         let v = epicycles(width / 2, height / 2, 0, fourierSignal);
         path.unshift(v);
-    
-        // Begin drawing the shape
+
+        // Begin recreating the drawing
         beginShape();
         noFill();
         for (let i =0; i < path.length; i++) {
@@ -144,39 +151,25 @@ function draw() {
             vertex(path[i].x, path[i].y);
         }
         endShape();
-    
+
+        // Add text to let the user know how many epicycles there are
+        placeText(`Number of epicycles: ${fourierSignal.length}`);
+
         // Calculate the time step and increment the time variable
         const dt = TWO_PI / fourierSignal.length;
         time += dt;
     
         // If the drawing is finished, reset the time and path variables
-        if (time > TWO_PI) {
+        if (time > 999*TWO_PI/1000) {
+            /*
+                Has to be slightly less than TWO_PI to avoid the program
+                drawing a connection between the first and final points
+            */
             time = 0;
             path = [];
+            // state = -1; // Comment out to stop animation from looping
         }
-
-        // Declare amount of padding for the text
-        const padding = 40;
-        // Construct the string and determine its width and height
-        let numberEpicycles = `Number of epicycles: ${fourierSignal.length}`;
-        numberEpicycles = numberEpicycles.toUpperCase();
-        let messageWidth = textWidth(numberEpicycles);
-        let messageHeight = textAscent(numberEpicycles);
-        // Add a white background to the text
-        fill(255, 255, 0);
-        strokeWeight(0);
-        x = 3*padding/4;
-        y = height-3*padding/4;
-        w = padding/2+messageWidth;
-        h = -messageHeight-padding/2;
-        rect(x, y, w, h);
-        // Add text to let the user know how many epicycles there are
-        fill(0);
-        textSize(16);
-        textFont('Helvetica Mono');
-        textStyle(BOLD);
-        text(numberEpicycles, padding, height-padding);
-
+        
     }
     
 }
