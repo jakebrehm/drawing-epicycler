@@ -7,7 +7,9 @@ of a user-drawn path.
 
 # How to get it
 
-To get a copy of this script, use the following command:
+To experience a live demo of this application, [click here](https://jakebrehm.com/epicycler/).
+
+Alternatively, to get a copy of this script, use the following command:
 ```
 git clone https://github.com/jakebrehm/drawing-epicycler.git
 ```
