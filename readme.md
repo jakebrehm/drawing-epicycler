@@ -1,4 +1,6 @@
-# Drawing Epicycler
+<p align="center">
+  <img src="https://github.com/jakebrehm/drawing-epicycler/blob/master/img/logo.png" width="700" height="233" alt="drawing epicycler logo"/>
+</p>
 
 **Drawing Epicycler** is a program that visualizes the discrete fourier transform
 of a user-drawn path.
