@@ -1,11 +1,13 @@
 <p align="center">
-  <img src="https://github.com/jakebrehm/drawing-epicycler/blob/master/img/logo.png" alt="drawing epicycler logo"/>
+  <img src="https://raw.githubusercontent.com/jakebrehm/drawing-epicycler/master/img/logo.png" alt="drawing epicycler logo"/>
 </p>
 
 **Drawing Epicycler** is a program that visualizes the discrete fourier transform
 of a user-drawn path.
 
 ---
+
+<img src="https://raw.githubusercontent.com/jakebrehm/drawing-epicycler/master/img/demo-border.gif" alt="Drawing Epicycler GIF" style="width: 100%;"/>
 
 # How to get it
 
